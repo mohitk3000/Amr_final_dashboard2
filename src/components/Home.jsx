@@ -39,23 +39,23 @@ const Home=()=>{
             <Col>
             <Teleoperation/>
             </Col>
+            
             <Col>
+          
+          <RobotState/>
+          </Col>
+          <Col>
             <h1>MAP</h1>
            <Map/>
             
             </Col>
            </Row>
 
-           <Row>
-            {" "}
-            <Col>
           
-            <RobotState/>
-            </Col>
+          
            
            
          
-           </Row>
             
             
           

@@ -12,10 +12,22 @@ class Connection extends Component {
 
     this.handleMove = this.handleMove.bind(this);
     this.handleStop = this.handleStop.bind(this);
+    this.view_map=this.view_map.bind(this)
   }
 
   componentDidMount() {
     this.initConnection();
+    const mapTopic = new window.ROSLIB.Topic({
+      ros: this.state.ros,
+      name: "/map",
+      messageType: "nav_msgs/OccupancyGrid",
+    });
+
+    mapTopic.subscribe((message) => {
+      // Log received map data to the console
+      console.log("Received Map Data: ", message);
+      console.log("haare krishna");
+    });
   }
 
   initConnection() {
@@ -106,6 +118,23 @@ class Connection extends Component {
       console.error('Error publishing Twist message:', error);
     }
   }
+  view_map(){
+    var viewer=new window.ROS2D.Viewer({
+      divID:"nav_div3",
+      width:155,
+      height:299,
+    });
+    var navClient = new window.NAV2D.OccupancyGridClientNav({
+      ros: this.state.ros,
+      rootObject: viewer.scene,
+      viewer: viewer,
+      topic: "/map", // Correct the property name here
+      withOrientation: true,
+    });
+    
+    
+    
+  }
   
 
   render() {
@@ -119,6 +148,7 @@ class Connection extends Component {
           move={this.handleMove}
           stop={this.handleStop}
         ></Joystick>
+         <div id="nav_div3"></div>
 
         
       </div>

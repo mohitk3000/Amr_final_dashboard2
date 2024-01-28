@@ -70,7 +70,7 @@ class RobotState extends Component {
   view_map(){
     var viewer=new window.ROS2D.Viewer({
       divID:"nav_div3",
-      width:155,
+      width:160,
       height:299,
     });
     var navClient = new window.NAV2D.OccupancyGridClientNav({
@@ -96,5 +96,6 @@ class RobotState extends Component {
     );
   }
 }
+
 
 export default RobotState;

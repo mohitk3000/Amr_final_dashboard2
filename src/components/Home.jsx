@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect } from 'react';
 import {Row,Col,Container,Button} from "react-bootstrap";
 import Connection from './Hconn'; // Import the Connection component
 import Teleoperation from './Teleoperation'; 
@@ -8,7 +8,26 @@ import RobotState from './RobotState';
 
 
 
+
 const Home=()=>{
+  
+  useEffect(() => {
+    // Check if it's the first visit
+    const isFirstVisit = localStorage.getItem('firstVisit');
+
+    if (!isFirstVisit) {
+      // If it's the first visit, set a timeout to refresh after 1 second
+      setTimeout(() => {
+        // Set the flag in localStorage to indicate that it's no longer the first visit
+        localStorage.setItem('firstVisit', 'true');
+        // Reload the page
+        window.location.reload();
+      }, 1000);
+    }
+  }, []); // Empty dependency array means this effect runs once, equivalent to componentDidMount
+
+
+
     const [counter, setCounter] = useState(219);
     // Function to handle the button click and update the counter
   const handleButtonClick = () => {

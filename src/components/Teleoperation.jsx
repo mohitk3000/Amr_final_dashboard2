@@ -121,8 +121,27 @@ class Connection extends Component {
   }
 
 
-  publishCmdVel() {
-  console.log("hello world");
+Publishtostop(event) {
+    const { ros } = this.state; // Assuming ros is in your component state
+
+// Create an empty GoalID message to cancel all move_base goals
+const goalId = new window.ROSLIB.Message({
+  id: '',  // Leave it empty to cancel all goals
+  stamp: {
+    sec: 0,
+    nsec: 0
+  }
+});
+
+// Create a Topic to publish the GoalID message
+const topic = new window.ROSLIB.Topic({
+  ros: ros,
+  name: '/move_base/cancel',
+  messageType: 'actionlib_msgs/GoalID'
+});
+
+// Publish the GoalID message to cancel all move_base goals
+topic.publish(goalId);
   }
   view_map(){
     var viewer=new window.ROS2D.Viewer({
@@ -155,7 +174,7 @@ class Connection extends Component {
           stop={this.handleStop}
         ></Joystick>
          <div id="nav_div3"></div>
-         <button className="stop-button" onClick={this.publishCmdVel}>
+         <button className="stop-button" onClick={this.publishtostop}>
          Stop
       </button>
          

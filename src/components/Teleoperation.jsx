@@ -13,7 +13,8 @@ class Connection extends Component {
 
     this.handleMove = this.handleMove.bind(this);
     this.handleStop = this.handleStop.bind(this);
-    this.view_map=this.view_map.bind(this)
+    this.view_map=this.view_map.bind(this);
+    this.handleMove2 = this.handleMove2.bind(this);
   }
 
   componentDidMount() {
@@ -87,6 +88,43 @@ class Connection extends Component {
       console.error('Error publishing Twist message:', error);
     }
   }
+  handleMove2 = () => {
+    // Your code here{
+    const { ros } = this.state;
+
+    if (!ros) {
+      console.error('ROS connection not established');
+      return;
+    }
+    
+    // Create an empty GoalID message to cancel all move_base goals
+    const goalId = new window.ROSLIB.Message({
+      id: '',  // Leave it empty to cancel all goals
+      stamp: {
+        sec: 0,
+        nsec: 0
+      }
+    });
+    
+    try {
+      // Create a Topic to publish the GoalID message
+      const topic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: '/move_base/cancel',
+        messageType: 'actionlib_msgs/GoalID'
+      });
+    
+      if (!topic) {
+        console.error('Error creating ROS topic');
+        return;
+      }
+    
+      // Publish the GoalID message to cancel all move_base goals
+      topic.publish(goalId);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   
 
   handleStop(event) {
@@ -121,28 +159,7 @@ class Connection extends Component {
   }
 
 
-Publishtostop(event) {
-    const { ros } = this.state; // Assuming ros is in your component state
 
-// Create an empty GoalID message to cancel all move_base goals
-const goalId = new window.ROSLIB.Message({
-  id: '',  // Leave it empty to cancel all goals
-  stamp: {
-    sec: 0,
-    nsec: 0
-  }
-});
-
-// Create a Topic to publish the GoalID message
-const topic = new window.ROSLIB.Topic({
-  ros: ros,
-  name: '/move_base/cancel',
-  messageType: 'actionlib_msgs/GoalID'
-});
-
-// Publish the GoalID message to cancel all move_base goals
-topic.publish(goalId);
-  }
   view_map(){
     var viewer=new window.ROS2D.Viewer({
       divID:"nav_div3",
@@ -174,7 +191,7 @@ topic.publish(goalId);
           stop={this.handleStop}
         ></Joystick>
          <div id="nav_div3"></div>
-         <button className="stop-button" onClick={this.publishtostop}>
+         <button className="stop-button" onClick={this.handleMove2}>
          Stop
       </button>
          

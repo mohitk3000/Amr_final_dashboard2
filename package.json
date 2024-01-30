@@ -13,10 +13,11 @@
     "react-joystick-component": "^6.2.1",
     "react-router-dom": "^6.19.0",
     "react-scripts": "5.0.1",
+    "react-three-fiber": "^6.0.13",
     "ros2d": "^0.10.0",
     "ros3d": "^1.1.0",
     "roslib": "^1.4.1",
-    "three": "^0.160.0",
+    "three": "^0.160.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

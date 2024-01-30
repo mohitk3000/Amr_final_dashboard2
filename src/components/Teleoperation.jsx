@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Joystick } from 'react-joystick-component';
 import config from "../scripts/config";
+import './style.css';
 
 class Connection extends Component {
   constructor() {
@@ -118,6 +119,11 @@ class Connection extends Component {
       console.error('Error publishing Twist message:', error);
     }
   }
+
+
+  publishCmdVel() {
+  console.log("hello world");
+  }
   view_map(){
     var viewer=new window.ROS2D.Viewer({
       divID:"nav_div3",
@@ -149,6 +155,10 @@ class Connection extends Component {
           stop={this.handleStop}
         ></Joystick>
          <div id="nav_div3"></div>
+         <button className="stop-button" onClick={this.publishCmdVel}>
+         Stop
+      </button>
+         
 
         
       </div>

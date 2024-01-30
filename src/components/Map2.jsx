@@ -1,49 +1,109 @@
-import React, { useEffect } from 'react';
-import ROSLIB from 'roslib';
+import React, { Component } from 'react';
+import { Row, Col } from 'react-bootstrap';
+import Config from "../scripts/config";
+import * as ROSLIB from 'roslib';
+import './style.css'; // Import your CSS file
 
-const RosImageComponent = () => {
-  useEffect(() => {
-    // Connecting to ROS
-    const ros = new ROSLIB.Ros({
-      url: 'ws://localhost:9090',
-    });
 
-    ros.on('connection', function () {
-      console.log('Connected to websocket server.');
-    });
+class RobotState extends Component {
+  state={
+    ros:null,
+  };
 
-    ros.on('error', function (error) {
-      console.log('Error connecting to websocket server: ', error);
-    });
-
-    ros.on('close', function () {
-      console.log('Connection to websocket server closed.');
-    });
-
-    // Subscribing to Image Topic
-    const imageTopic = new ROSLIB.Topic({
-      ros: ros,
-      name: '/camera/image_raw/compressed',
-      messageType: 'sensor_msgs/CompressedImage',
-    });
-
-    imageTopic.subscribe(function (message) {
-      document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
-      imageTopic.unsubscribe();
-    });
-
-    // Cleanup on component unmount
-    return () => {
-      imageTopic.unsubscribe();
+  constructor(){
+    super();
+    this.state = {
+      ros: new window.ROSLIB.Ros(),
+      connection: false,
     };
-  }, []);
+    this.view_map=this.view_map.bind(this)
 
-  return (
-    <div>
-      <h1>ROS Image Dashboard</h1>
-      <img id="my_image" style={{ height: '100%', width: '100%', objectFit: 'contain' }} src="assets/img/placeholder.png" alt="ROS Image" />
-    </div>
-  );
-};
+   
+  }
+  componentDidMount() {
+    // Don't need to call getRobotState() here since it's already called in the 'connection' event
+    this.initConnection();
+    this.view_map();
+     // Subscribe to the /map topic
+     const mapTopic = new window.ROSLIB.Topic({
+      ros: this.state.ros,
+      name: "/map",
+      messageType: "nav_msgs/OccupancyGrid",
+    });
 
-export default RosImageComponent;
+    mapTopic.subscribe((message) => {
+      // Log received map data to the console
+      console.log("Received Map Data: ", message);
+      console.log("haare krishna");
+    });
+  }
+
+
+  initConnection() {
+    this.setState({ ros: new window.ROSLIB.Ros() });
+    console.log("Map: " + this.state.ros);
+  
+    this.state.ros.on("error", (error) => {
+      console.error("ROS Error:", error);
+    });
+  
+    try {
+      this.state.ros.connect(
+        "ws://" +
+          Config.ROSBRIDGE_SERVER_IP +
+          ":" +
+          Config.ROSBRIDGE_SERVER_PORT
+      );
+    } catch (error) {
+      console.error(
+        "ws://" +
+          Config.ROSBRIDGE_SERVER_IP +
+          ":" +
+          Config.ROSBRIDGE_SERVER_PORT
+      );
+      console.error("Cannot connect to the WS robot. Try again after 1 second");
+    }
+  }
+
+
+  
+  view_map(){
+    var viewer=new window.ROS2D.Viewer({
+      divID:"nav_div3",
+      width:200,
+      height:299,
+    });
+    var navClient = new window.NAV2D.OccupancyGridClientNav({
+      ros: this.state.ros,
+      rootObject: viewer.scene,
+      viewer: viewer,
+      serverName: "/move_base",// Correct the property name here
+      withOrientation: true,
+    });
+    
+    
+    
+  }
+
+
+  // ... your existing methods
+
+  render() {
+    return (
+      <div>
+        <div>
+        
+        </div>
+        <div id="nav_div3"></div>
+      </div>
+      
+    );
+  }
+}
+
+
+export default RobotState;
+
+
+// name: "/robot_pose_ekf/odom_combined",
+      // messageType: "geometry_msgs/PoseWithCovarianceStamped",

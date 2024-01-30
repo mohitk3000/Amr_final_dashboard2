@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
 import ROSLIB from 'roslib';
+import Config from "../scripts/config";
 
 const RosImageComponent = () => {
   useEffect(() => {
     // Connecting to ROS
+    
+
     const ros = new ROSLIB.Ros({
-      url: 'ws://localhost:9090',
+      url: "ws://" +
+      Config.ROSBRIDGE_SERVER_IP +
+      ":" +
+      Config.ROSBRIDGE_SERVER_PORT,
     });
 
     ros.on('connection', function () {

@@ -70,7 +70,7 @@ class RobotState extends Component {
   view_map(){
     var viewer=new window.ROS2D.Viewer({
       divID:"nav_div3",
-      width:155,
+      width:160,
       height:299,
     });
     var navClient = new window.NAV2D.OccupancyGridClientNav({
@@ -91,10 +91,16 @@ class RobotState extends Component {
   render() {
     return (
       <div>
-        <div id="nav_div3"></div>
+        
+        <div id="nav_div3"> <h1></h1></div>
       </div>
     );
   }
 }
 
+
 export default RobotState;
+
+
+// name: "/robot_pose_ekf/odom_combined",
+      // messageType: "geometry_msgs/PoseWithCovarianceStamped",

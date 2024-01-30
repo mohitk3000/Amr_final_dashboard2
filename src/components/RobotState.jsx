@@ -101,7 +101,7 @@ class RobotState extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id = "robot_pos">
         <Row>
           <Col>
             <h4 className='mt-4'>Position</h4>

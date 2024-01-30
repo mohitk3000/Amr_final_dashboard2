@@ -1,0 +1,66 @@
+
+
+
+    #nav_div3{
+        position: absolute;
+    align-items: center;
+    
+    right:-300px;
+    top:100px;
+    }
+   
+    #robot_pos{
+        position: relative;
+    align-items: right;
+    top:50px;
+    right:600px;
+    }
+    #map{
+        position:absolute;
+        top:300px;
+        right:200px;
+        
+    }
+
+
+    /* button  */
+    .stop-button {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #b66b63, #c0392b);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        border: 3px solid #ccc; /* Added border styling */
+      position:absolute;
+      top:15px;
+      left:140px;
+    }
+      
+      .stop-icon {
+        width: 50%;
+        height: 50%;
+        background-color: #fff;
+        border-radius: 50%;
+        border-color: black;
+      }
+      
+      .stop-text {
+        font-family: 'Arial', sans-serif;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      
+      .stop-button:hover {
+        background: radial-gradient(circle, #ea160b, #c0392b); /* Faded red color on hover */
+        box-shadow: 0 15px 12px rgba(0, 0, 0, 0.3);
+      }
+      .stop-button:active {
+        background: #fff; /* Change the background color to white on button press */
+        color: #333; /* Change the text color to dark grey on button press */
+      }
